@@ -226,3 +226,9 @@
   恢复
 
   ​	自动加载
+
+------
+
+浅析 Redis 分布式锁解决方案：
+
+https://www.infoq.cn/article/DVAAJ71F4fBQsxmGVdCE
