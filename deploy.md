@@ -3,6 +3,10 @@
 - 安装Docker
 
   https://www.runoob.com/docker/centos-docker-install.html
+  
+- Docker容器安装MySQL5.7
+  
+  https://blog.csdn.net/weixin_40461281/article/details/92610876
 
 - 使用Jenkins一键打包部署SpringBoot应用
 
