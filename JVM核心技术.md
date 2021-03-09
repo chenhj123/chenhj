@@ -18,7 +18,7 @@
 
 ### 双亲委托机制
 
-![类加载](images\classloader.png)
+![类加载](https://github.com/chenhj123/chenhj/blob/main/images/classloader.png)
 
 - 其中红色的箭头代表向上委托的方向，如果当前的类加载器没有从缓存中找到这个class对象，就会请求父加载器进行操作。直到启动类加载器。
 
@@ -35,7 +35,7 @@
 
 ### JVM内存结构
 
-![内存结构](images\memory_structure.png)
+![内存结构](https://github.com/chenhj123/chenhj/blob/main/images/memory_structure.png)
 
 上图有一个地方出现错误，元数据区Metaspace与Compressed Class Space存放class信息之间有交叉
 
@@ -44,3 +44,8 @@
 -Xms：指定虚拟机堆内存初始化大小；-Xmx：指定虚拟机堆内存最大值大小
 
 把两者设置为一致，是为了避免频繁扩容和GC释放堆内存造成的系统开销/压力
+
+### GC对比
+
+![GC](https://github.com/chenhj123/chenhj/blob/main/images/GC.png)
+
