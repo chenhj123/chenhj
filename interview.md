@@ -65,3 +65,44 @@
 8. ### servlet的生命周期
 
    https://blog.csdn.net/hanziang1996/article/details/78965791
+   
+9. 代码如下
+
+   ```java
+   public class equalDemo {
+       public static void main(String[] args) {
+           //先当与新建两个对象，地址不一致，返回false
+           Integer value1 = new Integer(1);
+           Integer value2 = new Integer(1);
+           System.out.println(value1 == value2);
+   		//相当于两个int，返回true
+           int value3 = 1;
+           int value4 = 1;
+           System.out.println(value3 == value4);
+   		//局部变量不影响外部变量，所以s1还是zhangsan
+           String s1 = "zhangsan";
+           exchange(s1);
+           System.out.println(s1);
+   		//s1地址，指向"list"，所以s1为lisi
+           s1 = "lisi";
+           System.out.println(s1);
+   		//两个地址不一致，所以为false
+           String str1 = new String("aa");
+           String str2 = new String("aa");
+           System.out.println(str1 == str2);
+           //int为基本类型，判断是否相等就可以使用==
+           //但是Integer cache中已有-128到127,大于这个范围就会产生新的new
+   		Integer c = 3;
+           Integer d = 3;
+           Integer e = 321;
+           Integer f = 321;
+           System.out.println(c == d);
+        System.out.println(e == f);
+       }
+   
+       private static void exchange(String s1){
+           s1 = "lisi";
+       }
+   }
+   ```
+   
