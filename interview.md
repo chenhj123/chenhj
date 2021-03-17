@@ -66,7 +66,7 @@
 
    https://blog.csdn.net/hanziang1996/article/details/78965791
    
-9. 代码如下
+9. ### 地址
 
    ```java
    public class equalDemo {
@@ -106,3 +106,50 @@
    }
    ```
    
+10. Spring 容器的加载过程
+
+    
+
+11. Spring IOC 怎么存储对象的
+
+    concurrentHashMap
+
+    首先Spring IOC容器是ApplicationContext，ApplicationContext又有上下级，同时委托给beanFactory管理对象。管理对象分三种：自定义bean，内建依赖，收工托管单例。Scope又分为单例、原型等（实例，beandefinition）,还有类型，名称，别名，加载顺序，以及依赖，都会保存
+
+12. Spring 怎么处理循环依赖
+
+    - Spring是通过递归的方式获取目标bean及其所依赖的bean的；
+    - Spring实例化一个bean的时候，是分两步进行的，首先实例化目标bean，然后为其注入属性。
+
+    结合这两点，也就是说，Spring在实例化一个bean的时候，是首先递归的实例化其所依赖的所有bean，直到某个bean没有依赖其他bean，此时就会将该实例返回，然后反递归的将获取到的bean设置为各个上层bean的属性的。
+
+13. HashMap 为什么线程不安全
+
+14. volitile关键字的作用
+
+    - 保证内存可见性
+    - 禁止指令重排
+
+15. 嗅探机制和缓存行是怎么回事
+
+    MESI缓存一致性协议
+
+    CPU缓存的最小单位：缓存行（Cache line），有可能32字节、64字节、128字节，根据CPU来定；
+
+    https://www.cnblogs.com/yufeng218/p/12130406.html
+
+16. 线程池的执行流程
+
+17. 一个未知大小巨量的数字数据求和，用什么线程池好
+
+18. 并发工具用过什么应用场景
+
+19. 举一个多线程开发的例子
+
+20. 初始化对象，各个值在 JVM 中怎么分配
+
+21. 什么情况下对象会直接到栈中
+
+22. SQL 优化
+
+23. 对微服务的理解，罗列一下相关技术框架
