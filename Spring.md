@@ -11,7 +11,7 @@
 
 如图：
 
-![SpingBean](https://github.com/chenhj123/chenhj/blob/main/images/GC.png)
+![SpingBean](https://github.com/chenhj123/chenhj/blob/main/images/SpringBean.png)
 
 直接上代码
 

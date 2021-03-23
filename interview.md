@@ -153,3 +153,56 @@
 22. SQL 优化
 
 23. 对微服务的理解，罗列一下相关技术框架
+
+24. HashMap数据结构
+
+    HashMap的底层主要是基于数组和链表来实现的，它之所以有相当快的查询速度主要是因为它是通过计算散列码来决定存储的位置。HashMap中主要是通过key的hashCode来计算hash值的，只要hashCode相同，计算出来的hash值就一样。如果存储的对象对多了，就有可能不同的对象所算出来的hash值是相同的，这就出现了所谓的hash冲突。学过数据结构的同学都知道，解决hash冲突的方法有很多，HashMap底层是通过链表来解决hash冲突的。
+
+25. Java1.7和Java1.8有什么不同
+
+    - 新增stream
+    - Hashmap优化
+    - 移除永元代，变成元空间
+    - Lamda表达式
+    - 并发：LongAdder
+    - CompletableFuture
+    - StampedLock
+    - concurrentHashMap
+
+26. concurrentHashmap怎么实现线程安全
+
+    - 使用volatile保证当Node中的值变化时对于其他线程是可见的
+    - 使用table数组的头节点作为synchronized的锁来保证写操作的安全
+    - 当头节点为null时，使用CAS操作来保证数据能正确的写入
+
+27. synchronized 锁和 ReentrantLock 区别，为什么1.8改成 synchronized ，优化了什么
+
+    aaaa
+
+28. 怎么理解偏向锁、轻量级锁、重量级锁
+
+    偏向锁：无实际竞争，且将来只有一个申请锁的线程会使用锁。
+
+    轻量级锁：无实际竞争，多个线程交替使用锁；允许短时间的锁竞争。
+
+    重量级锁：有实际竞争，且锁竞争时间长
+
+29. SpringBean 的生命周期
+
+    实例化->属性赋值->初始化->销毁
+
+30. Springboot 和  Spring 有哪些区别
+
+    - 约定大于配置；
+    - 创建独立运行的 Spring 应用；
+    - 直接嵌入 Tomcat 或 Jetty，Undertow，无需部署 WAR 包；
+    - 提供限定性的 starter 依赖简化配置（就是脚手架）；
+    - 在必要时自动化配置 Spring 和其他三方依赖库
+    - 提供生产 production-ready 特性，例如指标度量，健康检查，外部配置等
+    - 完全零代码生产和不需要 XML 配置
+
+31. mq 和 缓存作为中间件有什么区别，分别作用是什么
+
+    缓存：1.请求去重；2.恢复数据；3.预读取；4.临时存储
+
+    mq：1.超时订单；2.解耦；3.流量消峰；4.消息分发；5.异步消息
