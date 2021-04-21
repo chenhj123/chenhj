@@ -232,24 +232,105 @@
 
 35. 接口如何限流 何时需要限流 
 
+    单点应用，对应用入口进行限流，能达到效果
+
+    分布式应用，可加 Nacos 进行限流
+
+    限流算法：固定窗口计数器、滑动窗口计数器、漏桶、令牌桶
+
+    出现大量访问时需要限流，比如爬虫，热点事件，恶意攻击等等
+
+    [接口限流实践_清茶的博客-CSDN博客_接口限流](https://blog.csdn.net/m0_38001814/article/details/111099678)
+
+    
+
 36. lambda表示引用外部变量为何需要final修饰 
+
+    说实话，我看不太懂
+
+    [为什么lambda表达式要用final](https://blog.csdn.net/lwwgtm/article/details/60478936)
 
 37. ThreadLocal为什么容易造成内存泄漏 如何避免 
 
+    ThreadLocalMap 使用 ThreadLocal 的弱引用作为 key，如果一个 ThreadLocal 没有外部强引用来引用它，那么系统 GC 的时候，这个 ThreadLocal 势必会被回收，这样一来，ThreadLocalMap 中就会出现 key 为 null 的 Entry，就没有办法访问这些 key 为 null 的 Entry 的 value，如果当前线程再迟迟不结束的话，这些 key 为 null 的 Entry 的 value 就会一直存在一条强引用链：Thread Ref -> Thread -> ThreaLocalMap -> Entry -> value永远无法回收，造成内存泄漏。
+
+    其实，ThreadLocalMap 的设计中已经考虑到这种情况，也加上了一些防护措施：在 ThreadLocal 的get()，set()，remove() 的时候都会清除线程 ThreadLocalMap 里所有 key 为 null 的 value
+
+    处理方法：每次使用完ThreadLocal，都调用它的remove()方法，清除数据
+
+    [深入分析 ThreadLocal 内存泄漏问题 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/56214714)
+
 38. if/else过多如何优化 
 
-39. 常用设计模式介绍 
+    提前return、策略模式、多态、枚举、使用 Optional、数组小技巧
+
+    
+
+39. 常用设计模式介绍
+
+    工厂模式、单例模式、观察者模式、策略模式、适配器模式、命令模式、装饰者模式、外观模式
+
+    [Java中常用的10种设计模式详解_琪琪的博客-CSDN博客](https://blog.csdn.net/wmq880204/article/details/75106848)
+
+    
 
 40. redis 哨兵与集群的区别 
 
+    哨兵是解决集群的一种方式
+
+    [redis-集群 redis cluster：和哨兵机制的本质区别？ (juejin.cn)](https://juejin.cn/post/6844903872519995400)
+
+    
+
 41. HashMap高并发下会出现什么问题 
+
+    [你知道HashMap在高并发下可能会出现哪些问题吗 - 云+社区 - 腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/1525791)
+
+    
 
 42. ConcurentHash为什么线程安全 jdk1.8与1.7之前有何区别 
 
-43. 什么场景会出现 栈溢出 内存溢出 CPU消耗率过高 出现的原因是什么 
+    [ConCurrentHashMap 1.7 和 1.8 的区别 - 简书 (jianshu.com)](https://www.jianshu.com/p/933289f27270)
 
-44. 如何排查上述场景 
+    
 
-45. 解释双亲委派机制 
+43. 什么场景会出现 栈溢出、内存溢出 CPU消耗率过高 出现的原因是什么，如何排查上述场景 
 
-46. jdbc为何要打破双亲委派 
+    类中出现无限引用情况，导致栈的深度超过虚拟机允许深度，占用内存高，无限GC，导致CPU消耗率过高
+
+    临时解决：重启项目，调高-Xms，-Xmx，提高服务器配置
+
+    定位问题：top命令查看最耗CPU的进程，查看该进程中最耗CPU的线程，将线程号转为16进制,同时查看这些线程当前正在干什么，可以看到**最耗CPU的线程都是在进行GC**，用Jmap命令查看当前堆的使用情况，查看gc频率的命令，dump文件分析问题产生原因，定位到出现问题的类位置，查看代码定位问题
+
+    处理问题：优化代码，符合GC回收标准，防止无限引用
+
+    - 内存溢出和内存泄漏的区别
+      - 内存溢出 （Out Of Memory）：是指程序在申请内存时，没有足够的内存空间供其使用，出现Out Of Memory。
+      - 内存泄露 （Memory Leak）：是指程序在申请内存后，由于某种原因无法释放已申请的内存空间，导致这块内存无法再次被利用，造成系统内存的浪费。memory leak会最终会导致out of memory。
+    - 内存溢出分类
+      - 栈内存溢出（StackOverflowError）：方法运行的时候栈的深度超过了虚拟机容许的最大深度所致
+      - 堆内存溢出(OutOfMemoryError : java heap space)：内存泄露(找出内存泄漏的对象是怎么被GC ROOT引用起来)，内存溢出(程序本生需要的内存大于了我们给虚拟机配置的内存)
+      - 持久带内存溢出(OutOfMemoryError: PermGen space)
+      - 无法创建本地线程
+
+    [JVM 内存溢出详解（栈溢出，堆溢出，持久代溢出、无法创建本地线程） - myseries - 博客园 (cnblogs.com)](https://www.cnblogs.com/myseries/p/12079757.html)
+
+    [内存溢出+CPU占用过高:问题排查+解决方案+复盘（超详细分析教程）_通往精英的成长之路-CSDN博客](https://blog.csdn.net/zhanghan18333611647/article/details/109255980)
+
+    
+
+44. 解释双亲委派机制 
+
+    https://github.com/chenhj123/chenhj/blob/main/JVM.md
+
+    
+
+45. jdbc为何要打破双亲委派 
+
+    JDBC的Driver接口定义在JDK中，其实现由各个数据库的服务商来提供，比如MySQL驱动包。DriverManager 类中要加载各个实现了Driver接口的类，然后进行管理，但是DriverManager位于 JAVA_HOME中jre/lib/rt.jar 包，由BootStrap类加载器加载，而其Driver接口的实现类是位于服务商提供的 Jar 包，根据类加载机制，当被装载的类引用了另外一个类的时候，虚拟机就会使用装载第一个类的类装载器装载被引用的类。也就是说BootStrap类加载器还要去加载jar包中的Driver接口的实现类。我们知道，BootStrap类加载器默认只负责加载 JAVA_HOME中jre/lib/rt.jar 里所有的class，所以需要由子类加载器去加载Driver实现，这就破坏了双亲委派模型。
+    相关文章：
+
+    [阿里面试题：JDBC、Tomcat为什么要破坏双亲委派模型-Java知音 (javazhiyin.com)](https://www.javazhiyin.com/44347.html)
+
+    [聊聊JDBC是如何破坏双亲委派机制的_P19777的博客-CSDN博客](https://blog.csdn.net/P19777/article/details/100829154)
+
