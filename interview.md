@@ -230,7 +230,108 @@
     - 执行构造函数余下的部分
     - 对默认属性和方法分别进行赋值和初始化
 
-35. 接口如何限流 何时需要限流 
+35. CMS垃圾回收过程
+
+    阶段1：Initial Mark（初始标记SWT）
+
+    阶段2：Concurrent Mark（并发标记）
+
+    阶段3：Concurrent Preclean（并发预清理）
+
+    阶段4：Final Remark（最终标记SWT）
+
+    阶段5：Concurrent Sweep（并发清除）
+
+    阶段6：Concurrent Reset（并发重置）
+
+    
+
+36. 三色标记算法
+
+    用于 CMS 与 G1 等垃圾回收算法中，具体后续研究
+
+    https://blog.csdn.net/qq_32099833/article/details/109558171
+
+    
+
+37. JVM常用工具
+
+    jps、jstat、jmap、jstack、jinfo、jhat
+
+    
+
+38. 双重检测单例写法，什么情况下不加volatile会出问题
+
+    指令重排
+
+    
+
+39. MySQL的事务隔离级别是什么？MVCC实现？rr能解决幻读问题吗？幻读问题怎么解决？一个update语句执行过程？
+
+    MySQL默认使用InnoDB，InnoDB默认隔离级别是RR（REPEATABLE READ）
+
+    因为InnoDB有MVCC机制（多版本并发控制），可以使用快照读，而不会被阻塞。
+
+    每条记录在更新的时候都会同时记录一条回滚操作（回滚操作日志undo log）。同一条记录在系统中可以存在多个版本，这就是数据库的多版本并发控制（MVCC）。即通过回滚（rollback操作），可以回到前一个状态的值。
+
+    rr不能解决幻读问题，如下可解决幻读问题
+
+    1. 手动增加 FOR UPDATE;
+
+       如果 id 的记录存在则会被加行（X）锁，如果不存在，则会加 next-lock key / gap 锁（范围行锁），即记录存在与否，mysql 都会对记录应该对应的索引加锁，其他事务是无法再获得做操作的。
+
+    2. 直接改为 SERIALIZABLE 隔离级别
+
+    [一条更新语句在MySQL是怎么执行的](https://gsmtoday.github.io/2019/02/08/how-update-executes-in-mysql/)
+
+    
+
+40. 一个查询语句发现索引没有起作用，从哪些方面排查问题？
+
+    https://juejin.cn/post/6945713777015390222
+
+    
+
+41. 什么情况下会发生索引失效？
+
+    - 如果条件中有or，即使其中有条件带索引也不会使用
+    - 对于多列索引，不是使用的第一部分(第一个)，则不会使用索引
+    - like查询是以%开头
+    - 如果列类型是字符串，那一定要在条件中将数据使用引号引用起来,否则不使用索引
+    - 如果mysql估计使用全表扫描要比使用索引快,则不使用索引
+    - 查询的数量是大表的大部分，应该是30％以上
+    - 查询条件使用函数在索引列上，或者 对索引列进行运算， 运算包括(+，-，*，/，! 等)
+    - 对小表查询
+    - CBO计算走索引花费过大的情况。其实也包含了上面的情况，这里指的是表占有的block要比索引小。
+    - 对索引列进行运算.需要建立函数索引
+    - not in，not exist，<> 
+    - 当变量采用的是times变量，而表的字段采用的是date变量时.或相反情况
+    - B-tree索引 is null不会走,is not null会走,位图索引 is null,is not null 都会走
+    - 联合索引 is not null 只要在建立的索引列（不分先后）都会走, in null时 必须要和建立索引第一列一起使用,当建立索引第一位置条件是is null 时,其他建立索引的列可以是is null（但必须在所有列 都满足is null的时候）,或者=一个值； 当建立索引的第一位置是=一个值时,其他索引列可以是任何情况（包括is null =一个值）,以上两种情况索引都会走。其他情况不会走
+
+42. Springboot的自动配置是基于spring的哪些扩展点实现的？
+
+43. mybatis框架内，mapper可以自定义重载方法吗？为什么？
+
+44. Redis的主从复制过程？选举过程？redis有哪些持久化方法？aof的持久化过程
+
+45. 为什么阿里开发手册不建议用 Executors 创建连接池？
+
+    线程池不允许使用Executors去创建，而是通过ThreadPoolExecutor的方式，可更加明确线程池的运行规则，规避资源耗尽的风险
+
+    newFixedThreadPool和newSingleThreadExecutor
+
+    主要问题是堆积的请求处理队列可能会耗费非常大的内存，甚至OOM
+
+    newCachedThreadPool和newScheduledThreadPool
+
+    主要问题是线程数最大数是Integer.MAX_VALUE，可能会创建数量非常多的线程，甚至OOM
+
+    https://blog.csdn.net/fly910905/article/details/81584675
+
+    
+
+46. 接口如何限流 何时需要限流 
 
     单点应用，对应用入口进行限流，能达到效果
 
@@ -244,13 +345,15 @@
 
     
 
-36. lambda表示引用外部变量为何需要final修饰 
+47. lambda表示引用外部变量为何需要final修饰 
 
     说实话，我看不太懂
 
     [为什么lambda表达式要用final](https://blog.csdn.net/lwwgtm/article/details/60478936)
 
-37. ThreadLocal为什么容易造成内存泄漏 如何避免 
+    
+
+48. ThreadLocal为什么容易造成内存泄漏 如何避免 
 
     ThreadLocalMap 使用 ThreadLocal 的弱引用作为 key，如果一个 ThreadLocal 没有外部强引用来引用它，那么系统 GC 的时候，这个 ThreadLocal 势必会被回收，这样一来，ThreadLocalMap 中就会出现 key 为 null 的 Entry，就没有办法访问这些 key 为 null 的 Entry 的 value，如果当前线程再迟迟不结束的话，这些 key 为 null 的 Entry 的 value 就会一直存在一条强引用链：Thread Ref -> Thread -> ThreaLocalMap -> Entry -> value永远无法回收，造成内存泄漏。
 
@@ -260,13 +363,15 @@
 
     [深入分析 ThreadLocal 内存泄漏问题 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/56214714)
 
-38. if/else过多如何优化 
+    
+
+49. if/else过多如何优化 
 
     提前return、策略模式、多态、枚举、使用 Optional、数组小技巧
 
     
 
-39. 常用设计模式介绍
+50. 常用设计模式介绍
 
     工厂模式、单例模式、观察者模式、策略模式、适配器模式、命令模式、装饰者模式、外观模式
 
@@ -274,7 +379,7 @@
 
     
 
-40. redis 哨兵与集群的区别 
+51. redis 哨兵与集群的区别 
 
     哨兵是解决集群的一种方式
 
@@ -282,19 +387,19 @@
 
     
 
-41. HashMap高并发下会出现什么问题 
+52. HashMap高并发下会出现什么问题 
 
     [你知道HashMap在高并发下可能会出现哪些问题吗 - 云+社区 - 腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/1525791)
 
     
 
-42. ConcurentHash为什么线程安全 jdk1.8与1.7之前有何区别 
+53. ConcurentHash为什么线程安全 jdk1.8与1.7之前有何区别 
 
     [ConCurrentHashMap 1.7 和 1.8 的区别 - 简书 (jianshu.com)](https://www.jianshu.com/p/933289f27270)
 
     
 
-43. 什么场景会出现 栈溢出、内存溢出 CPU消耗率过高 出现的原因是什么，如何排查上述场景 
+54. 什么场景会出现 栈溢出、内存溢出 CPU消耗率过高 出现的原因是什么，如何排查上述场景 
 
     类中出现无限引用情况，导致栈的深度超过虚拟机允许深度，占用内存高，无限GC，导致CPU消耗率过高
 
@@ -319,13 +424,13 @@
 
     
 
-44. 解释双亲委派机制 
+55. 解释双亲委派机制 
 
     https://github.com/chenhj123/chenhj/blob/main/JVM.md
 
     
 
-45. jdbc为何要打破双亲委派 
+56. jdbc为何要打破双亲委派 
 
     JDBC的Driver接口定义在JDK中，其实现由各个数据库的服务商来提供，比如MySQL驱动包。DriverManager 类中要加载各个实现了Driver接口的类，然后进行管理，但是DriverManager位于 JAVA_HOME中jre/lib/rt.jar 包，由BootStrap类加载器加载，而其Driver接口的实现类是位于服务商提供的 Jar 包，根据类加载机制，当被装载的类引用了另外一个类的时候，虚拟机就会使用装载第一个类的类装载器装载被引用的类。也就是说BootStrap类加载器还要去加载jar包中的Driver接口的实现类。我们知道，BootStrap类加载器默认只负责加载 JAVA_HOME中jre/lib/rt.jar 里所有的class，所以需要由子类加载器去加载Driver实现，这就破坏了双亲委派模型。
     相关文章：
