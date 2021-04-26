@@ -309,13 +309,51 @@
     - B-tree索引 is null不会走,is not null会走,位图索引 is null,is not null 都会走
     - 联合索引 is not null 只要在建立的索引列（不分先后）都会走, in null时 必须要和建立索引第一列一起使用,当建立索引第一位置条件是is null 时,其他建立索引的列可以是is null（但必须在所有列 都满足is null的时候）,或者=一个值； 当建立索引的第一位置是=一个值时,其他索引列可以是任何情况（包括is null =一个值）,以上两种情况索引都会走。其他情况不会走
 
+    
+
 42. Springboot的自动配置是基于spring的哪些扩展点实现的？
+
+    [SpringBoot各类扩展点详解 - 阿豪聊干货 - 博客园 (cnblogs.com)](https://www.cnblogs.com/hafiz/p/9155017.html)
+
+    
 
 43. mybatis框架内，mapper可以自定义重载方法吗？为什么？
 
+    不可以重载，会抛出异常
+
+    那是因为mybatis动态代理寻找策略是 全限定名+方法名。不涉及参数。所以不支持重载
+
+    
+
 44. Redis的主从复制过程？选举过程？redis有哪些持久化方法？aof的持久化过程
 
-45. 为什么阿里开发手册不建议用 Executors 创建连接池？
+    1）保存主节点（master）信息
+
+    2）从节点（slave）内部通过每秒运行的定时任务维护复制相关逻辑，当定时任务发现存在新的主节点后，会尝试与该节点建立网络连接
+
+    3）发送 ping 命令
+
+    4）权限验证
+
+    5）同步数据集
+
+    6）命令持续复制
+
+    [redis集群选举原理–带流程图，一看就懂 | 码农家园 (codenong.com)](https://www.codenong.com/cs106356837/)
+
+    aof和rdb
+
+    [Redis AOF 持久化详解 (juejin.cn)](https://juejin.cn/post/6844903902991630349)
+
+    
+
+45. Java动态代理详解
+
+    [Java 动态代理详解 - whirlys - 博客园 (cnblogs.com)](https://www.cnblogs.com/whirly/p/10154887.html)
+
+    
+
+46. 为什么阿里开发手册不建议用 Executors 创建连接池？
 
     线程池不允许使用Executors去创建，而是通过ThreadPoolExecutor的方式，可更加明确线程池的运行规则，规避资源耗尽的风险
 
@@ -331,7 +369,7 @@
 
     
 
-46. 接口如何限流 何时需要限流 
+47. 接口如何限流 何时需要限流 
 
     单点应用，对应用入口进行限流，能达到效果
 
@@ -345,7 +383,7 @@
 
     
 
-47. lambda表示引用外部变量为何需要final修饰 
+48. lambda表示引用外部变量为何需要final修饰 
 
     说实话，我看不太懂
 
@@ -353,7 +391,7 @@
 
     
 
-48. ThreadLocal为什么容易造成内存泄漏 如何避免 
+49. ThreadLocal为什么容易造成内存泄漏 如何避免 
 
     ThreadLocalMap 使用 ThreadLocal 的弱引用作为 key，如果一个 ThreadLocal 没有外部强引用来引用它，那么系统 GC 的时候，这个 ThreadLocal 势必会被回收，这样一来，ThreadLocalMap 中就会出现 key 为 null 的 Entry，就没有办法访问这些 key 为 null 的 Entry 的 value，如果当前线程再迟迟不结束的话，这些 key 为 null 的 Entry 的 value 就会一直存在一条强引用链：Thread Ref -> Thread -> ThreaLocalMap -> Entry -> value永远无法回收，造成内存泄漏。
 
@@ -365,13 +403,13 @@
 
     
 
-49. if/else过多如何优化 
+50. if/else过多如何优化 
 
     提前return、策略模式、多态、枚举、使用 Optional、数组小技巧
 
     
 
-50. 常用设计模式介绍
+51. 常用设计模式介绍
 
     工厂模式、单例模式、观察者模式、策略模式、适配器模式、命令模式、装饰者模式、外观模式
 
@@ -379,7 +417,7 @@
 
     
 
-51. redis 哨兵与集群的区别 
+52. redis 哨兵与集群的区别 
 
     哨兵是解决集群的一种方式
 
@@ -387,19 +425,19 @@
 
     
 
-52. HashMap高并发下会出现什么问题 
+53. HashMap高并发下会出现什么问题 
 
     [你知道HashMap在高并发下可能会出现哪些问题吗 - 云+社区 - 腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/1525791)
 
     
 
-53. ConcurentHash为什么线程安全 jdk1.8与1.7之前有何区别 
+54. ConcurentHash为什么线程安全 jdk1.8与1.7之前有何区别 
 
     [ConCurrentHashMap 1.7 和 1.8 的区别 - 简书 (jianshu.com)](https://www.jianshu.com/p/933289f27270)
 
     
 
-54. 什么场景会出现 栈溢出、内存溢出 CPU消耗率过高 出现的原因是什么，如何排查上述场景 
+55. 什么场景会出现 栈溢出、内存溢出 CPU消耗率过高 出现的原因是什么，如何排查上述场景 
 
     类中出现无限引用情况，导致栈的深度超过虚拟机允许深度，占用内存高，无限GC，导致CPU消耗率过高
 
@@ -424,13 +462,13 @@
 
     
 
-55. 解释双亲委派机制 
+56. 解释双亲委派机制 
 
     https://github.com/chenhj123/chenhj/blob/main/JVM.md
 
     
 
-56. jdbc为何要打破双亲委派 
+57. jdbc为何要打破双亲委派 
 
     JDBC的Driver接口定义在JDK中，其实现由各个数据库的服务商来提供，比如MySQL驱动包。DriverManager 类中要加载各个实现了Driver接口的类，然后进行管理，但是DriverManager位于 JAVA_HOME中jre/lib/rt.jar 包，由BootStrap类加载器加载，而其Driver接口的实现类是位于服务商提供的 Jar 包，根据类加载机制，当被装载的类引用了另外一个类的时候，虚拟机就会使用装载第一个类的类装载器装载被引用的类。也就是说BootStrap类加载器还要去加载jar包中的Driver接口的实现类。我们知道，BootStrap类加载器默认只负责加载 JAVA_HOME中jre/lib/rt.jar 里所有的class，所以需要由子类加载器去加载Driver实现，这就破坏了双亲委派模型。
     相关文章：
@@ -439,3 +477,79 @@
 
     [聊聊JDBC是如何破坏双亲委派机制的_P19777的博客-CSDN博客](https://blog.csdn.net/P19777/article/details/100829154)
 
+58. SpringApplication.run之后做了什么
+
+    ```java
+    public ConfigurableApplicationContext run(String... args) {
+        //计时器对象
+        StopWatch stopWatch = new StopWatch();
+        //计时开始
+        stopWatch.start();
+        //声明Spring上下文
+        ConfigurableApplicationContext context = null;
+        //创建一个异常报告
+        Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+        //用来设置java.awt.headless 属性是true 还是false
+        configureHeadlessProperty();
+        //获取启动监听器
+        SpringApplicationRunListeners listeners = getRunListeners(args);
+        //启动监听器
+        listeners.starting();
+        try {
+            // 初始化应用程序启动参数
+            ApplicationArguments applicationArguments = new DefaultApplicationArguments(
+                args);
+            // 准备环境 通过开启的监听器和默认参数准备运行环境
+            ConfigurableEnvironment environment = prepareEnvironment(listeners,applicationArguments);
+            // 忽略配置的bean
+            configureIgnoreBeanInfo(environment);
+            // 打印banner,就是启动的时候在控制台的spring图案
+            Banner printedBanner = printBanner(environment);
+            // 创建容器
+            context = createApplicationContext();
+            //获取报告实例
+            exceptionReporters = getSpringFactoriesInstances(
+                SpringBootExceptionReporter.class,
+                new Class[] { ConfigurableApplicationContext.class }, context);
+            // 准备应用上下文(spring容器前置处理)
+            prepareContext(context, environment, listeners, applicationArguments,
+                           printedBanner);
+            // 刷新容器 扫注解扫启动类上的SpringBootApplication 注解
+            refreshContext(context);
+            // 刷新容器后的扩展接口(spring容器后置处理)
+            afterRefresh(context, applicationArguments);
+            // 结束计时器并打印，这就是我们启动后console的显示的时间
+            stopWatch.stop();
+            // 开启一个日志对象
+            if (this.logStartupInfo) {
+                new StartupInfoLogger(this.mainApplicationClass)
+                    .logStarted(getApplicationLog(), stopWatch);
+            }
+            // 监听者开启上下文(遍历监听者集合为每个监听者调用各自的started()方法)
+            listeners.started(context);
+            // （8）：执行Runners
+            //用于调用项目中自定义的执行器XxxRunner类，使得在项目启动完成后立即执行一些特定程序
+            //Runner 运行器用于在服务启动时进行一些业务初始化操作，这些操作只在服务启动后执行一次。
+            //Spring Boot提供了ApplicationRunner和CommandLineRunner两种服务接口
+            callRunners(context, applicationArguments);
+        }
+        catch (Throwable ex) {
+            // 如果发生异常，则进行处理，并抛出 IllegalStateException 异常
+            handleRunFailure(context, ex, exceptionReporters, listeners);
+            throw new IllegalStateException(ex);
+        }
+    
+        //   发布应用上下文就绪事件
+        //表示在前面一切初始化启动都没有问题的情况下，使用运行监听器SpringApplicationRunListener持续运行配置好的应用上下文ApplicationContext，这样整个Spring Boot项目就正式启动完成了。
+        try {
+            listeners.running(context);
+        }
+        catch (Throwable ex) {
+            // 如果发生异常，则进行处理，并抛出 IllegalStateException 异常
+            handleRunFailure(context, ex, exceptionReporters, null);
+            throw new IllegalStateException(ex);
+        }
+        //返回容器
+        return context;
+    }
+    ```
