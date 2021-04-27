@@ -114,7 +114,7 @@
          //用于自定义筛选器
          @Bean
          @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
+         public AuthenticationManager authenticationManagerBean() throws Exception { 
              return super.authenticationManagerBean();
          }
      }
