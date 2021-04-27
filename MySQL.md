@@ -84,3 +84,8 @@
 
    SnowFlake算法在同一毫秒内最多可以生成多少个全局唯一ID呢：： **同一毫秒的ID数量 = 1024 X 4096 = 4194304**
 
+
+
+------
+
+[这次终于懂了，InnoDB的七种锁（收藏） (qq.com)](https://mp.weixin.qq.com/s/f4_o-6-JEbIzPCH09mxHJg)
