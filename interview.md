@@ -553,3 +553,15 @@
         return context;
     }
     ```
+    
+59. 大搜车中间件团队面试题锦集
+
+    - kafka 文件的存储格式是怎样的，kafka怎么异步刷盘的
+    - Java 原子类是不是只靠cas就保证了线程安全
+    - Redis 文件过期删除key怎么删除
+    - 红黑树跟平衡二叉树相比优势在哪里，为什么 hashmap 用红黑树不用平衡二叉树
+    - http 怎么设计的
+    - kafka 怎么做到高吞吐量
+    - spring boot 怎么启动一个 starter
+    - tcp time wait 和 close wait 出现在哪些地方，如果程序出现大量 time wait 或者 close wait 怎么排查
+
