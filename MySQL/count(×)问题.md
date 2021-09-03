@@ -11,15 +11,20 @@
 
 因为版本控制（MVCC），我们来看下面一个例子
 
-|          会话A          |           会话B           |           会话C           |
-| :---------------------: | :-----------------------: | :-----------------------: |
-|         begin;          |                           |                           |
-| select count(*) from t; |                           |                           |
-|                         |                           | insert into t(c)value(1); |
-|                         |          begin;           |                           |
-|                         | insert into t(c)value(1); |                           |
-| select count(*) from t; |  select count(*) from t;  |  select count(*) from t;  |
-|         (返回4)         |          (返回6)          |         （返回5）         |
+```sql
+//先创建一个表
+create table tcount(c int) engine=InnoDB;
+```
+
+|            会话A             |             会话B              |             会话C              |
+| :--------------------------: | :----------------------------: | :----------------------------: |
+|            begin;            |                                |                                |
+| select count(*) from tcount; |                                |                                |
+|                              |                                | insert into tcount(c)value(1); |
+|                              |             begin;             |                                |
+|                              | insert into tcount(c)value(1); |                                |
+| select count(*) from tcount; |  select count(*) from tcount;  |  select count(*) from tcount;  |
+|          (返回 0 )           |           (返回 2 )            |          （返回 1 ）           |
 
 我们知道，主键索引树的叶子节点是数据，而普通索引树的叶子节点是主键值。所以 count(*) 遍历哪一颗树都是一样的，MySQL 优化器会找到最小的那棵树来遍历。在保证逻辑正确的前提下，尽量减少描扫的数据量，是数据库系统设计的通用法则之一。
 
