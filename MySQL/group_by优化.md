@@ -22,7 +22,7 @@ call groupdata();
 然后执行下面语句
 
 ```sql
-select id%10 as m, count(*) as c from t1 group by m;
+select id%10 as m, count(*) as c from group_optimize group by m;
 ```
 
 这个语句的逻辑是把表里的数据，按照 id%10 进行分组统计，并按照 m 的结果排序后输出，explain 结果如下：
@@ -88,7 +88,7 @@ select SQL_BIG_RESULT id%100 as m, count(*) as c from group_optimize group by m;
 执行流程就是这样的：
 
 1. 初始化 sort_buffer，确定放入一个整型字段，记为 m
-2. 扫描表 t1 的索引 a，依次取出里面的 id 值, 将 id%100 的值存入 sort_buffer 中
+2. 扫描表 group_optimize 的索引 a，依次取出里面的 id 值, 将 id%100 的值存入 sort_buffer 中
 3. 扫描完成后，对 sort_buffer 的字段 m 做排序（如果 sort_buffer 内存不够用，就会利用磁盘临时文件辅助排序）
 4. 排序完成后，就得到了一个有序数组
 
