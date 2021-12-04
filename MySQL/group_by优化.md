@@ -1,4 +1,4 @@
-### group by 优化
+## group by 优化
 
 创建表
 
@@ -45,7 +45,7 @@ select id%10 as m, count(*) as c from t1 group by m;
    2. 如果表中有主键为 x 的行，就将 x 这一行的 c 值加 1
 3. 遍历完成后，再根据字段 m 做排序，得到的结果集返回给客户端
 
-#### Group by 优化方法 -- 索引
+### Group by 优化方法 -- 索引
 
 可以看到，不论是使用内存临时表还是磁盘临时表，group by 逻辑都需要构造一个带唯一索引的表，执行代价都是比较高的
 
@@ -73,7 +73,7 @@ select z, count(*) as c from group_optimize group by z;
 
 从 Extra 字段可以看到，这个语句的执行不再需要临时表，也不需要排序了。
 
-#### group by 优化方法 -- 直接排序
+### group by 优化方法 -- 直接排序
 
 如果碰上不适合创建索引的场景，我们还是要老老实实做排序的。那么，这时候的 group by 要怎么优化呢？
 
