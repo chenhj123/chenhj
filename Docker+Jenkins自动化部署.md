@@ -97,7 +97,7 @@ docker logs jenkins
                 <include>${project.build.finalName}.jar</include>
             </resource>
         </resources>
-    </cofiguration>
+    </configuration>
 </plugin>
 ```
 
